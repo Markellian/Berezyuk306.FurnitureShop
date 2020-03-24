@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3075b50a0b2540aea6fbd6482b70cf31" Name="Diagram1">
+        <EntityTypeShape EntityType="FurnitureShopModel.Dostavka" Width="1.5" PointX="4" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Edinica_izmerenia" Width="1.5" PointX="1.5" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Equipment" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Equipment_type" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Furnityra" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.GOST" Width="1.5" PointX="1.5" PointY="35.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Materials" Width="1.5" PointX="0.75" PointY="30.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Operation" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Operation_specification" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Order" Width="1.5" PointX="3.75" PointY="23" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Order_detail" Width="1.5" PointX="6" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Product" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Role" Width="1.5" PointX="1.5" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Shipper" Width="1.5" PointX="1.75" PointY="40.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Specification_furniture" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Specification_material" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Specification_sborochnay_edinica" Width="1.5" PointX="3" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Type_complectyushih" Width="1.5" PointX="1.5" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Type_material" Width="1.5" PointX="1.5" PointY="37.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FurnitureShopModel.User" Width="1.5" PointX="1.5" PointY="22.875" IsExpanded="true" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Dostavka_Furnityra" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Dostavka_Materials" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Dostavka_Shipper" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Furnityra_Edinica_izmerenia" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Materials_Edinica_izmerenia" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Equipment_Equipment_type" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Operation_specification_Equipment_type" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Furnityra_Type_complectyushih" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Specification_furniture_Furnityra" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Materials_GOST" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Materials_Type_material" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Specification_material_Materials" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Operation_specification_Operation" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Operation_specification_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Order_detail_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Order_User" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Order_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Order_detail_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Specification_furniture_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Specification_material_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Specification_sborochnay_edinica_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Specification_sborochnay_edinica_Product1" ManuallyRouted="false" />
+        <AssociationConnector Association="FurnitureShopModel.FK_User_Role" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FurnitureShopModel.Equipment_specification" Width="1.875" PointX="5.25" PointY="3.5" />
+        <AssociationConnector Association="FurnitureShopModel.FK_Equipment_specification_Equipment" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
