@@ -5,16 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Хранилище FurnitureShopModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Dostavka">
-          <Key>
-            <PropertyRef Name="Shipper" />
-            <PropertyRef Name="Product" />
-          </Key>
-          <Property Name="Shipper" Type="int" Nullable="false" />
-          <Property Name="Product" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="DateDostavki" Type="date" Nullable="false" />
-          <Property Name="Kolichestvo" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Edinica_izmerenia">
           <Key>
             <PropertyRef Name="Edinica_izmerenia_id" />
@@ -57,6 +47,9 @@
           <Property Name="Type_complectyushih" Type="int" Nullable="false" />
           <Property Name="Price" Type="money" Nullable="false" />
           <Property Name="Image" Type="image" />
+          <Property Name="Shipper_ID" Type="int" />
+          <Property Name="DateShip" Type="datetime" />
+          <Property Name="Quality" Type="int" />
           <Property Name="Ves" Type="float" />
         </EntityType>
         <EntityType Name="GOST">
@@ -78,6 +71,9 @@
           <Property Name="GOST" Type="nvarchar" MaxLength="20" />
           <Property Name="Dlina" Type="float" />
           <Property Name="Image" Type="image" />
+          <Property Name="Shipper_ID" Type="int" />
+          <Property Name="DateShip" Type="datetime" />
+          <Property Name="Quality" Type="int" />
           <Property Name="characteristic" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Operation">
@@ -128,6 +124,13 @@
           </Key>
           <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Size" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Quality">
+          <Key>
+            <PropertyRef Name="QualityID" />
+          </Key>
+          <Property Name="QualityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QualityName" Type="nvarchar" MaxLength="27" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -211,42 +214,6 @@
           <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="Photo" Type="image" />
         </EntityType>
-        <Association Name="FK_Dostavka_Furnityra">
-          <End Role="Furnityra" Type="Self.Furnityra" Multiplicity="1" />
-          <End Role="Dostavka" Type="Self.Dostavka" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Furnityra">
-              <PropertyRef Name="Articyl" />
-            </Principal>
-            <Dependent Role="Dostavka">
-              <PropertyRef Name="Product" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Dostavka_Materials">
-          <End Role="Materials" Type="Self.Materials" Multiplicity="1" />
-          <End Role="Dostavka" Type="Self.Dostavka" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Materials">
-              <PropertyRef Name="Articyl" />
-            </Principal>
-            <Dependent Role="Dostavka">
-              <PropertyRef Name="Product" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Dostavka_Shipper">
-          <End Role="Shipper" Type="Self.Shipper" Multiplicity="1" />
-          <End Role="Dostavka" Type="Self.Dostavka" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Shipper">
-              <PropertyRef Name="Shipper_ID" />
-            </Principal>
-            <Dependent Role="Dostavka">
-              <PropertyRef Name="Shipper" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Equipment_Equipment_type">
           <End Role="Equipment_type" Type="Self.Equipment_type" Multiplicity="1" />
           <End Role="Equipment" Type="Self.Equipment" Multiplicity="*" />
@@ -283,6 +250,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Furnityra_Quality">
+          <End Role="Quality" Type="Self.Quality" Multiplicity="0..1" />
+          <End Role="Furnityra" Type="Self.Furnityra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quality">
+              <PropertyRef Name="QualityID" />
+            </Principal>
+            <Dependent Role="Furnityra">
+              <PropertyRef Name="Quality" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Furnityra_Shipper">
+          <End Role="Shipper" Type="Self.Shipper" Multiplicity="0..1" />
+          <End Role="Furnityra" Type="Self.Furnityra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shipper">
+              <PropertyRef Name="Shipper_ID" />
+            </Principal>
+            <Dependent Role="Furnityra">
+              <PropertyRef Name="Shipper_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Furnityra_Type_complectyushih">
           <End Role="Type_complectyushih" Type="Self.Type_complectyushih" Multiplicity="1" />
           <End Role="Furnityra" Type="Self.Furnityra" Multiplicity="*" />
@@ -316,6 +307,30 @@
             </Principal>
             <Dependent Role="Materials">
               <PropertyRef Name="GOST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Materials_Quality">
+          <End Role="Quality" Type="Self.Quality" Multiplicity="0..1" />
+          <End Role="Materials" Type="Self.Materials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quality">
+              <PropertyRef Name="QualityID" />
+            </Principal>
+            <Dependent Role="Materials">
+              <PropertyRef Name="Quality" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Materials_Shipper">
+          <End Role="Shipper" Type="Self.Shipper" Multiplicity="0..1" />
+          <End Role="Materials" Type="Self.Materials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shipper">
+              <PropertyRef Name="Shipper_ID" />
+            </Principal>
+            <Dependent Role="Materials">
+              <PropertyRef Name="Shipper_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -502,7 +517,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Хранилище FurnitureShopModelContainer">
-          <EntitySet Name="Dostavka" EntityType="Self.Dostavka" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Edinica_izmerenia" EntityType="Self.Edinica_izmerenia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Equipment_specification" EntityType="Self.Equipment_specification" Schema="dbo" store:Type="Tables" />
@@ -515,6 +529,7 @@
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_detail" EntityType="Self.Order_detail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Quality" EntityType="Self.Quality" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shipper" EntityType="Self.Shipper" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Specification_furniture" EntityType="Self.Specification_furniture" Schema="dbo" store:Type="Tables" />
@@ -524,18 +539,6 @@
           <EntitySet Name="Type_complectyushih" EntityType="Self.Type_complectyushih" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Type_material" EntityType="Self.Type_material" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Dostavka_Furnityra" Association="Self.FK_Dostavka_Furnityra">
-            <End Role="Furnityra" EntitySet="Furnityra" />
-            <End Role="Dostavka" EntitySet="Dostavka" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Dostavka_Materials" Association="Self.FK_Dostavka_Materials">
-            <End Role="Materials" EntitySet="Materials" />
-            <End Role="Dostavka" EntitySet="Dostavka" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Dostavka_Shipper" Association="Self.FK_Dostavka_Shipper">
-            <End Role="Shipper" EntitySet="Shipper" />
-            <End Role="Dostavka" EntitySet="Dostavka" />
-          </AssociationSet>
           <AssociationSet Name="FK_Equipment_Equipment_type" Association="Self.FK_Equipment_Equipment_type">
             <End Role="Equipment_type" EntitySet="Equipment_type" />
             <End Role="Equipment" EntitySet="Equipment" />
@@ -548,6 +551,14 @@
             <End Role="Edinica_izmerenia" EntitySet="Edinica_izmerenia" />
             <End Role="Furnityra" EntitySet="Furnityra" />
           </AssociationSet>
+          <AssociationSet Name="FK_Furnityra_Quality" Association="Self.FK_Furnityra_Quality">
+            <End Role="Quality" EntitySet="Quality" />
+            <End Role="Furnityra" EntitySet="Furnityra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Furnityra_Shipper" Association="Self.FK_Furnityra_Shipper">
+            <End Role="Shipper" EntitySet="Shipper" />
+            <End Role="Furnityra" EntitySet="Furnityra" />
+          </AssociationSet>
           <AssociationSet Name="FK_Furnityra_Type_complectyushih" Association="Self.FK_Furnityra_Type_complectyushih">
             <End Role="Type_complectyushih" EntitySet="Type_complectyushih" />
             <End Role="Furnityra" EntitySet="Furnityra" />
@@ -558,6 +569,14 @@
           </AssociationSet>
           <AssociationSet Name="FK_Materials_GOST" Association="Self.FK_Materials_GOST">
             <End Role="GOST" EntitySet="GOST" />
+            <End Role="Materials" EntitySet="Materials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Materials_Quality" Association="Self.FK_Materials_Quality">
+            <End Role="Quality" EntitySet="Quality" />
+            <End Role="Materials" EntitySet="Materials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Materials_Shipper" Association="Self.FK_Materials_Shipper">
+            <End Role="Shipper" EntitySet="Shipper" />
             <End Role="Materials" EntitySet="Materials" />
           </AssociationSet>
           <AssociationSet Name="FK_Materials_Type_material" Association="Self.FK_Materials_Type_material">
@@ -625,19 +644,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FurnitureShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Dostavka">
-          <Key>
-            <PropertyRef Name="Shipper" />
-            <PropertyRef Name="Product" />
-          </Key>
-          <Property Name="Shipper" Type="Int32" Nullable="false" />
-          <Property Name="Product" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateDostavki" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Kolichestvo" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Furnityra" Relationship="Self.FK_Dostavka_Furnityra" FromRole="Dostavka" ToRole="Furnityra" />
-          <NavigationProperty Name="Materials" Relationship="Self.FK_Dostavka_Materials" FromRole="Dostavka" ToRole="Materials" />
-          <NavigationProperty Name="Shipper1" Relationship="Self.FK_Dostavka_Shipper" FromRole="Dostavka" ToRole="Shipper" />
-        </EntityType>
         <EntityType Name="Edinica_izmerenia">
           <Key>
             <PropertyRef Name="Edinica_izmerenia_id" />
@@ -653,10 +659,20 @@
           </Key>
           <Property Name="Marking" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Equipment_type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Equipment_type1" Relationship="Self.FK_Equipment_Equipment_type" FromRole="Equipment" ToRole="Equipment_type" />
           <Property Name="Date_purchase" Type="DateTime" Precision="0" />
           <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Equipment_specification" Relationship="FurnitureShopModel.FK_Equipment_specification_Equipment" FromRole="Equipment" ToRole="Equipment_specification" />
+          <NavigationProperty Name="Equipment_type1" Relationship="Self.FK_Equipment_Equipment_type" FromRole="Equipment" ToRole="Equipment_type" />
+          <NavigationProperty Name="Equipment_specification" Relationship="Self.FK_Equipment_specification_Equipment" FromRole="Equipment" ToRole="Equipment_specification" />
+        </EntityType>
+        <EntityType Name="Equipment_specification">
+          <Key>
+            <PropertyRef Name="Marking" />
+            <PropertyRef Name="Specification_name" />
+          </Key>
+          <Property Name="Marking" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Specification_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Specification_value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Equipment" Relationship="Self.FK_Equipment_specification_Equipment" FromRole="Equipment_specification" ToRole="Equipment" />
         </EntityType>
         <EntityType Name="Equipment_type">
           <Key>
@@ -677,11 +693,15 @@
           <Property Name="Type_complectyushih" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Shipper_ID" Type="Int32" />
+          <Property Name="DateShip" Type="DateTime" Precision="3" />
           <Property Name="Ves" Type="Double" />
-          <NavigationProperty Name="Dostavka" Relationship="Self.FK_Dostavka_Furnityra" FromRole="Furnityra" ToRole="Dostavka" />
           <NavigationProperty Name="Edinica_izmerenia1" Relationship="Self.FK_Furnityra_Edinica_izmerenia" FromRole="Furnityra" ToRole="Edinica_izmerenia" />
+          <NavigationProperty Name="Shipper" Relationship="Self.FK_Furnityra_Shipper" FromRole="Furnityra" ToRole="Shipper" />
           <NavigationProperty Name="Type_complectyushih1" Relationship="Self.FK_Furnityra_Type_complectyushih" FromRole="Furnityra" ToRole="Type_complectyushih" />
           <NavigationProperty Name="Specification_furniture" Relationship="Self.FK_Specification_furniture_Furnityra" FromRole="Furnityra" ToRole="Specification_furniture" />
+          <Property Name="Quality" Type="Int32" />
+          <NavigationProperty Name="Quality1" Relationship="FurnitureShopModel.FK_Furnityra_Quality" FromRole="Furnityra" ToRole="Quality" />
         </EntityType>
         <EntityType Name="GOST">
           <Key>
@@ -703,12 +723,16 @@
           <Property Name="GOST" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Dlina" Type="Double" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Shipper_ID" Type="Int32" />
+          <Property Name="DateShip" Type="DateTime" Precision="3" />
           <Property Name="characteristic" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Dostavka" Relationship="Self.FK_Dostavka_Materials" FromRole="Materials" ToRole="Dostavka" />
           <NavigationProperty Name="Edinica_izmerenia1" Relationship="Self.FK_Materials_Edinica_izmerenia" FromRole="Materials" ToRole="Edinica_izmerenia" />
           <NavigationProperty Name="GOST1" Relationship="Self.FK_Materials_GOST" FromRole="Materials" ToRole="GOST" />
+          <NavigationProperty Name="Shipper" Relationship="Self.FK_Materials_Shipper" FromRole="Materials" ToRole="Shipper" />
           <NavigationProperty Name="Type_material1" Relationship="Self.FK_Materials_Type_material" FromRole="Materials" ToRole="Type_material" />
           <NavigationProperty Name="Specification_material" Relationship="Self.FK_Specification_material_Materials" FromRole="Materials" ToRole="Specification_material" />
+          <Property Name="Quality" Type="Int32" />
+          <NavigationProperty Name="Quality1" Relationship="FurnitureShopModel.FK_Materials_Quality" FromRole="Materials" ToRole="Quality" />
         </EntityType>
         <EntityType Name="Operation">
           <Key>
@@ -793,7 +817,8 @@
           <Property Name="Shipper_region" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Shipper_street" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Shipper_house" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Dostavka" Relationship="Self.FK_Dostavka_Shipper" FromRole="Shipper" ToRole="Dostavka" />
+          <NavigationProperty Name="Furnityra" Relationship="Self.FK_Furnityra_Shipper" FromRole="Shipper" ToRole="Furnityra" />
+          <NavigationProperty Name="Materials" Relationship="Self.FK_Materials_Shipper" FromRole="Shipper" ToRole="Materials" />
         </EntityType>
         <EntityType Name="Specification_furniture">
           <Key>
@@ -869,42 +894,6 @@
           <NavigationProperty Name="Order1" Relationship="Self.FK_Order_User1" FromRole="User" ToRole="Order" />
           <NavigationProperty Name="Role" Relationship="Self.FK_User_Role" FromRole="User" ToRole="Role" />
         </EntityType>
-        <Association Name="FK_Dostavka_Furnityra">
-          <End Role="Furnityra" Type="Self.Furnityra" Multiplicity="1" />
-          <End Role="Dostavka" Type="Self.Dostavka" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Furnityra">
-              <PropertyRef Name="Articyl" />
-            </Principal>
-            <Dependent Role="Dostavka">
-              <PropertyRef Name="Product" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Dostavka_Materials">
-          <End Role="Materials" Type="Self.Materials" Multiplicity="1" />
-          <End Role="Dostavka" Type="Self.Dostavka" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Materials">
-              <PropertyRef Name="Articyl" />
-            </Principal>
-            <Dependent Role="Dostavka">
-              <PropertyRef Name="Product" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Dostavka_Shipper">
-          <End Role="Shipper" Type="Self.Shipper" Multiplicity="1" />
-          <End Role="Dostavka" Type="Self.Dostavka" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Shipper">
-              <PropertyRef Name="Shipper_ID" />
-            </Principal>
-            <Dependent Role="Dostavka">
-              <PropertyRef Name="Shipper" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Furnityra_Edinica_izmerenia">
           <End Role="Edinica_izmerenia" Type="Self.Edinica_izmerenia" Multiplicity="1" />
           <End Role="Furnityra" Type="Self.Furnityra" Multiplicity="*" />
@@ -941,6 +930,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Equipment_specification_Equipment">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+          <End Role="Equipment_specification" Type="Self.Equipment_specification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="Marking" />
+            </Principal>
+            <Dependent Role="Equipment_specification">
+              <PropertyRef Name="Marking" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Operation_specification_Equipment_type">
           <End Role="Equipment_type" Type="Self.Equipment_type" Multiplicity="0..1" />
           <End Role="Operation_specification" Type="Self.Operation_specification" Multiplicity="*" />
@@ -950,6 +951,18 @@
             </Principal>
             <Dependent Role="Operation_specification">
               <PropertyRef Name="Equipment_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Furnityra_Shipper">
+          <End Role="Shipper" Type="Self.Shipper" Multiplicity="0..1" />
+          <End Role="Furnityra" Type="Self.Furnityra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shipper">
+              <PropertyRef Name="Shipper_ID" />
+            </Principal>
+            <Dependent Role="Furnityra">
+              <PropertyRef Name="Shipper_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -986,6 +999,18 @@
             </Principal>
             <Dependent Role="Materials">
               <PropertyRef Name="GOST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Materials_Shipper">
+          <End Role="Shipper" Type="Self.Shipper" Multiplicity="0..1" />
+          <End Role="Materials" Type="Self.Materials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shipper">
+              <PropertyRef Name="Shipper_ID" />
+            </Principal>
+            <Dependent Role="Materials">
+              <PropertyRef Name="Shipper_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1147,10 +1172,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="FurnitureShopEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Dostavka" EntityType="Self.Dostavka" />
+        <EntityContainer Name="FurnitureShopEntitie" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Edinica_izmerenia" EntityType="Self.Edinica_izmerenia" />
           <EntitySet Name="Equipment" EntityType="Self.Equipment" />
+          <EntitySet Name="Equipment_specification" EntityType="Self.Equipment_specification" />
           <EntitySet Name="Equipment_type" EntityType="Self.Equipment_type" />
           <EntitySet Name="Furnityra" EntityType="Self.Furnityra" />
           <EntitySet Name="GOST" EntityType="Self.GOST" />
@@ -1169,18 +1194,6 @@
           <EntitySet Name="Type_complectyushih" EntityType="Self.Type_complectyushih" />
           <EntitySet Name="Type_material" EntityType="Self.Type_material" />
           <EntitySet Name="User" EntityType="Self.User" />
-          <AssociationSet Name="FK_Dostavka_Furnityra" Association="Self.FK_Dostavka_Furnityra">
-            <End Role="Furnityra" EntitySet="Furnityra" />
-            <End Role="Dostavka" EntitySet="Dostavka" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Dostavka_Materials" Association="Self.FK_Dostavka_Materials">
-            <End Role="Materials" EntitySet="Materials" />
-            <End Role="Dostavka" EntitySet="Dostavka" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Dostavka_Shipper" Association="Self.FK_Dostavka_Shipper">
-            <End Role="Shipper" EntitySet="Shipper" />
-            <End Role="Dostavka" EntitySet="Dostavka" />
-          </AssociationSet>
           <AssociationSet Name="FK_Furnityra_Edinica_izmerenia" Association="Self.FK_Furnityra_Edinica_izmerenia">
             <End Role="Edinica_izmerenia" EntitySet="Edinica_izmerenia" />
             <End Role="Furnityra" EntitySet="Furnityra" />
@@ -1193,9 +1206,17 @@
             <End Role="Equipment_type" EntitySet="Equipment_type" />
             <End Role="Equipment" EntitySet="Equipment" />
           </AssociationSet>
+          <AssociationSet Name="FK_Equipment_specification_Equipment" Association="Self.FK_Equipment_specification_Equipment">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="Equipment_specification" EntitySet="Equipment_specification" />
+          </AssociationSet>
           <AssociationSet Name="FK_Operation_specification_Equipment_type" Association="Self.FK_Operation_specification_Equipment_type">
             <End Role="Equipment_type" EntitySet="Equipment_type" />
             <End Role="Operation_specification" EntitySet="Operation_specification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Furnityra_Shipper" Association="Self.FK_Furnityra_Shipper">
+            <End Role="Shipper" EntitySet="Shipper" />
+            <End Role="Furnityra" EntitySet="Furnityra" />
           </AssociationSet>
           <AssociationSet Name="FK_Furnityra_Type_complectyushih" Association="Self.FK_Furnityra_Type_complectyushih">
             <End Role="Type_complectyushih" EntitySet="Type_complectyushih" />
@@ -1207,6 +1228,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Materials_GOST" Association="Self.FK_Materials_GOST">
             <End Role="GOST" EntitySet="GOST" />
+            <End Role="Materials" EntitySet="Materials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Materials_Shipper" Association="Self.FK_Materials_Shipper">
+            <End Role="Shipper" EntitySet="Shipper" />
             <End Role="Materials" EntitySet="Materials" />
           </AssociationSet>
           <AssociationSet Name="FK_Materials_Type_material" Association="Self.FK_Materials_Type_material">
@@ -1261,31 +1286,46 @@
             <End Role="Role" EntitySet="Role" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
-          <EntitySet Name="Equipment_specification" EntityType="FurnitureShopModel.Equipment_specification" />
-          <AssociationSet Name="FK_Equipment_specification_Equipment" Association="FurnitureShopModel.FK_Equipment_specification_Equipment">
-            <End Role="Equipment" EntitySet="Equipment" />
-            <End Role="Equipment_specification" EntitySet="Equipment_specification" />
+          <EntitySet Name="Quality" EntityType="FurnitureShopModel.Quality" />
+          <AssociationSet Name="FK_Furnityra_Quality" Association="FurnitureShopModel.FK_Furnityra_Quality">
+            <End Role="Quality" EntitySet="Quality" />
+            <End Role="Furnityra" EntitySet="Furnityra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Materials_Quality" Association="FurnitureShopModel.FK_Materials_Quality">
+            <End Role="Quality" EntitySet="Quality" />
+            <End Role="Materials" EntitySet="Materials" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Equipment_specification">
+        <EntityType Name="Quality">
           <Key>
-            <PropertyRef Name="Marking" />
-            <PropertyRef Name="Specification_name" />
+            <PropertyRef Name="QualityID" />
           </Key>
-          <Property Name="Marking" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Specification_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Specification_value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Equipment" Relationship="FurnitureShopModel.FK_Equipment_specification_Equipment" FromRole="Equipment_specification" ToRole="Equipment" />
+          <Property Name="QualityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QualityName" Type="String" MaxLength="27" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Furnityra" Relationship="FurnitureShopModel.FK_Furnityra_Quality" FromRole="Quality" ToRole="Furnityra" />
+          <NavigationProperty Name="Materials" Relationship="FurnitureShopModel.FK_Materials_Quality" FromRole="Quality" ToRole="Materials" />
         </EntityType>
-        <Association Name="FK_Equipment_specification_Equipment">
-          <End Type="FurnitureShopModel.Equipment" Role="Equipment" Multiplicity="1" />
-          <End Type="FurnitureShopModel.Equipment_specification" Role="Equipment_specification" Multiplicity="*" />
+        <Association Name="FK_Furnityra_Quality">
+          <End Type="FurnitureShopModel.Quality" Role="Quality" Multiplicity="0..1" />
+          <End Type="FurnitureShopModel.Furnityra" Role="Furnityra" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Equipment">
-              <PropertyRef Name="Marking" />
+            <Principal Role="Quality">
+              <PropertyRef Name="QualityID" />
             </Principal>
-            <Dependent Role="Equipment_specification">
-              <PropertyRef Name="Marking" />
+            <Dependent Role="Furnityra">
+              <PropertyRef Name="Quality" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Materials_Quality">
+          <End Type="FurnitureShopModel.Quality" Role="Quality" Multiplicity="0..1" />
+          <End Type="FurnitureShopModel.Materials" Role="Materials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quality">
+              <PropertyRef Name="QualityID" />
+            </Principal>
+            <Dependent Role="Materials">
+              <PropertyRef Name="Quality" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1294,17 +1334,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище FurnitureShopModelContainer" CdmEntityContainer="FurnitureShopEntities">
-          <EntitySetMapping Name="Dostavka">
-            <EntityTypeMapping TypeName="FurnitureShopModel.Dostavka">
-              <MappingFragment StoreEntitySet="Dostavka">
-                <ScalarProperty Name="Shipper" ColumnName="Shipper" />
-                <ScalarProperty Name="Product" ColumnName="Product" />
-                <ScalarProperty Name="DateDostavki" ColumnName="DateDostavki" />
-                <ScalarProperty Name="Kolichestvo" ColumnName="Kolichestvo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+        <EntityContainerMapping StorageEntityContainer="Хранилище FurnitureShopModelContainer" CdmEntityContainer="FurnitureShopEntitie">
           <EntitySetMapping Name="Edinica_izmerenia">
             <EntityTypeMapping TypeName="FurnitureShopModel.Edinica_izmerenia">
               <MappingFragment StoreEntitySet="Edinica_izmerenia">
@@ -1316,10 +1346,19 @@
           <EntitySetMapping Name="Equipment">
             <EntityTypeMapping TypeName="FurnitureShopModel.Equipment">
               <MappingFragment StoreEntitySet="Equipment">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Date_purchase" ColumnName="Date_purchase" />
                 <ScalarProperty Name="Marking" ColumnName="Marking" />
                 <ScalarProperty Name="Equipment_type" ColumnName="Equipment_type" />
+                <ScalarProperty Name="Date_purchase" ColumnName="Date_purchase" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Equipment_specification">
+            <EntityTypeMapping TypeName="FurnitureShopModel.Equipment_specification">
+              <MappingFragment StoreEntitySet="Equipment_specification">
+                <ScalarProperty Name="Marking" ColumnName="Marking" />
+                <ScalarProperty Name="Specification_name" ColumnName="Specification_name" />
+                <ScalarProperty Name="Specification_value" ColumnName="Specification_value" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1333,6 +1372,7 @@
           <EntitySetMapping Name="Furnityra">
             <EntityTypeMapping TypeName="FurnitureShopModel.Furnityra">
               <MappingFragment StoreEntitySet="Furnityra">
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
                 <ScalarProperty Name="Articyl" ColumnName="Articyl" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Edinica_izmerenia" ColumnName="Edinica_izmerenia" />
@@ -1340,6 +1380,8 @@
                 <ScalarProperty Name="Type_complectyushih" ColumnName="Type_complectyushih" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Shipper_ID" ColumnName="Shipper_ID" />
+                <ScalarProperty Name="DateShip" ColumnName="DateShip" />
                 <ScalarProperty Name="Ves" ColumnName="Ves" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1354,6 +1396,7 @@
           <EntitySetMapping Name="Materials">
             <EntityTypeMapping TypeName="FurnitureShopModel.Materials">
               <MappingFragment StoreEntitySet="Materials">
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
                 <ScalarProperty Name="Articyl" ColumnName="Articyl" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Edinica_izmerenia" ColumnName="Edinica_izmerenia" />
@@ -1363,6 +1406,8 @@
                 <ScalarProperty Name="GOST" ColumnName="GOST" />
                 <ScalarProperty Name="Dlina" ColumnName="Dlina" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Shipper_ID" ColumnName="Shipper_ID" />
+                <ScalarProperty Name="DateShip" ColumnName="DateShip" />
                 <ScalarProperty Name="characteristic" ColumnName="characteristic" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1504,12 +1549,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Equipment_specification">
-            <EntityTypeMapping TypeName="FurnitureShopModel.Equipment_specification">
-              <MappingFragment StoreEntitySet="Equipment_specification">
-                <ScalarProperty Name="Specification_value" ColumnName="Specification_value" />
-                <ScalarProperty Name="Specification_name" ColumnName="Specification_name" />
-                <ScalarProperty Name="Marking" ColumnName="Marking" />
+          <EntitySetMapping Name="Quality">
+            <EntityTypeMapping TypeName="FurnitureShopModel.Quality">
+              <MappingFragment StoreEntitySet="Quality">
+                <ScalarProperty Name="QualityName" ColumnName="QualityName" />
+                <ScalarProperty Name="QualityID" ColumnName="QualityID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

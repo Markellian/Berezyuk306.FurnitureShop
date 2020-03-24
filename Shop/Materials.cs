@@ -17,7 +17,6 @@ namespace Shop
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Materials()
         {
-            this.Dostavka = new HashSet<Dostavka>();
             this.Specification_material = new HashSet<Specification_material>();
         }
     
@@ -30,14 +29,17 @@ namespace Shop
         public string GOST { get; set; }
         public Nullable<double> Dlina { get; set; }
         public byte[] Image { get; set; }
+        public Nullable<int> Shipper_ID { get; set; }
+        public Nullable<System.DateTime> DateShip { get; set; }
         public string characteristic { get; set; }
+        public Nullable<int> Quality { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Dostavka> Dostavka { get; set; }
         public virtual Edinica_izmerenia Edinica_izmerenia1 { get; set; }
         public virtual GOST GOST1 { get; set; }
+        public virtual Shipper Shipper { get; set; }
         public virtual Type_material Type_material1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Specification_material> Specification_material { get; set; }
+        public virtual Quality Quality1 { get; set; }
     }
 }

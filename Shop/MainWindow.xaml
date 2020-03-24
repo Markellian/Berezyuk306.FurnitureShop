@@ -13,7 +13,7 @@
     </Window.Resources>
     <Grid>
 
-        <Grid x:Name="AuthGrid" Visibility="Visible">
+        <Grid x:Name="AuthGrid" Visibility="Hidden">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="4*"/>
@@ -32,15 +32,18 @@
         <Grid x:Name="CustomerGrid" Visibility="Hidden">
             <Label Content="Страница заказчика" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" FontSize="24"/>
             <Button Content="Выход" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10" FontSize="24" Click="GoToAuth"/>
+
         </Grid>
         <Grid x:Name="MasterGrid" Visibility="Hidden">
             <Label Content="Страница мастера" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" FontSize="24"/>
             <Button Content="Выход" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10" FontSize="24" Click="GoToAuth"/>
+            <Button Content="Список материалов" Click="GoToListMaterials" HorizontalAlignment="Left" Margin="65,92,0,0" VerticalAlignment="Top" Width="125" Height="25"/>
         </Grid>
         <Grid x:Name="DirectorGrid" Visibility="Hidden">
             <Label Content="Страница директора" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" FontSize="24"/>
             <Button Content="Выход" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10" FontSize="24" Click="GoToAuth"/>
-            <Button Content="Учет оборудования" HorizontalAlignment="Left" Margin="107,111,0,0" VerticalAlignment="Top" Width="145" Height="34" Click="Button_Click_1"/>
+            <Button Content="Учет оборудования" HorizontalAlignment="Left" Margin="107,111,0,0" VerticalAlignment="Top" Width="145" Height="25" Click="Button_Click_1"/>
+            <Button Content="Список материалов" HorizontalAlignment="Left" Margin="107,157,0,0" VerticalAlignment="Top" Width="142" Height="25" Click="GoToListMaterials"/>
         </Grid>
         <Grid x:Name="EquipmentAccountingGrid" Visibility="Hidden">
             <Button Content="Назад" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="GoToDirector"/>
@@ -71,8 +74,8 @@
                         <DataGridTextColumn Header="Название" Binding="{Binding Path= Name}"/>
                         <DataGridTextColumn Header="Тип оборудования" Binding="{Binding Path= Type}"/>
                         <DataGridTemplateColumn x:Name="QQQ" Header="Характеристика" CellTemplate="{StaticResource Lis}"/>
-                        
-                    </DataGrid.Columns> 
+
+                    </DataGrid.Columns>
                 </DataGrid>
 
             </Grid>
@@ -81,10 +84,13 @@
         </Grid>
         <Grid x:Name="DeputyDirectorGrid" Visibility="Hidden">
             <Label Content="Страница заместителя директора" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" FontSize="24"/>
+            <Button Content="Список материалов" Click="GoToListMaterials" HorizontalAlignment="Left" Margin="65,92,0,0" VerticalAlignment="Top" Width="125" Height="25"/>
             <Button Content="Выход" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10" FontSize="24" Click="GoToAuth"/>
         </Grid>
         <Grid x:Name="ManagerGrid" Visibility="Hidden">
             <Label Content="Страница менеджера" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" FontSize="24"/>
+
+            <Button Content="Список материалов" Click="GoToListMaterials" HorizontalAlignment="Left" Margin="65,92,0,0" VerticalAlignment="Top" Width="125" Height="25"/>
             <Button Content="Выход" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10" FontSize="24" Click="GoToAuth"/>
         </Grid>
 
@@ -114,5 +120,48 @@
             <Button Content="Назад" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="GoToAuth"/>
 
         </Grid>
+        <Grid x:Name="MaterialsGrid" Visibility="Visible" IsVisibleChanged="MaterialsGrid_IsVisibleChanged">
+            <Button Content="Назад" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ReturnToLastGrid"/>
+            <Label Content="Список материалов" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" HorizontalAlignment="Left" Margin="80,10,0,0" VerticalAlignment="Top" Height="34" Width="665"/>
+            <DataGrid x:Name="MaterialsDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="297" Margin="54,89,0,0" VerticalAlignment="Top" Width="691">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Артикул" Binding="{Binding Path=Articyl}"/>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Path=Name}"/>
+                    <DataGridTextColumn Header="Количество" Binding="{Binding Path=Kolichestvo}"/>
+                    <DataGridTextColumn Header="Единица измерения" Binding="{Binding Path=Edinica_izmerenia_name}"/>
+                    <DataGridTextColumn Header="Закупочная цена" Binding="{Binding Path=Price}"/>
+                    <DataGridTextColumn Header="Поставщик" Binding="{Binding Path=Shipper_name}"/>
+                    <DataGridTextColumn Header="Дата доставки" Binding="{Binding Path=DateShip}"/>
+                    <DataGridTextColumn Header="Качество" Binding="{Binding Path=QualityName}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <ComboBox SelectionChanged="MaterialsQualityComboBox_SelectionChanged" x:Name="MaterialsQualityComboBox" HorizontalAlignment="Left" Margin="625,62,0,0" VerticalAlignment="Top" Width="120"/>
+            <Label x:Name="MaterialsAllLabel" Content="" HorizontalAlignment="Left" Margin="100,63,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="MaterialsShowLabel" Content="" HorizontalAlignment="Left" Margin="276,63,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.477,0.455"/>
+            <Label Content="Всего: " HorizontalAlignment="Left" Margin="54,63,0,0" VerticalAlignment="Top"/>
+            <Label Content="Показано: " HorizontalAlignment="Left" Margin="207,63,0,0" VerticalAlignment="Top"/>
+            <Button Content="Добавить" HorizontalAlignment="Left" Margin="54,391,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+            <Button x:Name="DeleteMaterial" Content="Удалить" HorizontalAlignment="Left" Margin="670,391,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
+
+        </Grid>
+        <Grid x:Name="AddMaterialGrid" Visibility="Visible" Background="White" Margin="199,58,213.6,24">
+            <Label BorderBrush="Black" BorderThickness="1"/>
+            <Button Content="X" HorizontalAlignment="Left" Margin="365,0,0,0" VerticalAlignment="Top" Width="16" Click="Button_Click_4"/>
+            <Label Content="Артикул:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="99,20,0,0" VerticalAlignment="Top" Height="38" Width="70"/>
+            <Label Content="Название:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="87,66,0,0" VerticalAlignment="Top" Height="37" Width="82"/>
+            <Label Content="Ед. измерения:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="57,110,0,0" VerticalAlignment="Top" Height="39" Width="112"/>
+            <Label Content="Количество:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="74,149,0,0" VerticalAlignment="Top" Height="40" Width="94"/>
+            <Label Content="Тип материала:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="52,197,0,0" VerticalAlignment="Top" Height="38" Width="116"/>
+            <Label Content="Цена:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="117,243,0,0" VerticalAlignment="Top" Height="37" Width="51"/>
+            <TextBox x:Name="MaterialArticylTextBox" HorizontalAlignment="Left" Height="23" Margin="174,30,0,0" MaxLength="50" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="MaterialNameTextBox" HorizontalAlignment="Left" Height="23" Margin="174,76,0,0" TextWrapping="Wrap" Text="" MaxLength="255" VerticalAlignment="Top" Width="120"/>
+            <ComboBox x:Name="MaterialEdIzmComboBox" HorizontalAlignment="Left" Margin="174,120,0,0" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="MaterialQuantityTextBox" HorizontalAlignment="Left" Height="23" Margin="174,160,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <ComboBox x:Name="MaterialTypeComboBox" HorizontalAlignment="Left" Margin="174,207,0,0" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="MaterialPriceTextBox" HorizontalAlignment="Left" Height="23" Margin="174,253,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <Button Content="Добавить" HorizontalAlignment="Left" Margin="145,304,0,0" VerticalAlignment="Top" Width="75" Click="AddMaterialButton_Click"/>
+
+        </Grid>
+
     </Grid>
 </Window>

@@ -19,6 +19,7 @@ using Image = System.Windows.Controls.Image;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using ClassLibrary1;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace Shop
 {
@@ -26,11 +27,13 @@ namespace Shop
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
+
     {
         public List<string> StringList { get; set; }
         private const string Error = "Ошибка!";
         User user;
         Captcha captcha;
+        Grid GridToReturn;
         public MainWindow()
         {
             InitializeComponent();
@@ -50,8 +53,7 @@ namespace Shop
             CapchaTextBox.Text = "";
             captcha = new Captcha();
             CapchaLabel.Content = captcha.CaptchaString;
-        }
-        
+        }        
         
         private void Authication_Click(object sender, RoutedEventArgs e)
         {
@@ -61,7 +63,7 @@ namespace Shop
             else
             {
                 bool enter = false;
-                using (var db2 = new FurnitureShopEntities())
+                using (var db2 = new FurnitureShopEntitie())
                 {                    
                     foreach (var log in from f in db2.User select f)
                     {
@@ -92,14 +94,14 @@ namespace Shop
                 }
             }
         }
-        private void MakeHiddenGrid(Grid g)
+        private void MakeHiddenParentGridOfButton(Button button)
         {
+            Grid g = (Grid)button.Parent;
             g.Visibility = Visibility.Hidden;
         }
         private void GoToAuth(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
-            MakeHiddenGrid((Grid)(button.Parent));
+            MakeHiddenParentGridOfButton((Button)sender);
             MakeAuthVisible();
         }
 
@@ -118,52 +120,52 @@ namespace Shop
         }
         private void Registrate(object sender, RoutedEventArgs e)
         {
-            string Pas = PasswordRegistrationPasswordBox.Password.ToString();
+            Password password = new Password(PasswordRegistrationPasswordBox.Password.ToString());
             if (LoginRegistrationTextBox.Text.ToString() == "") MessageBox.Show("Введите логин", Error);
-            else if (Pas == "") MessageBox.Show("Введите пароль", Error);
-            else if (Pas.Length < 6 || Pas.Length > 18) MessageBox.Show("Длана пароля должна быть не менее 6 и не более 18 символов", Error);
-            else if (!Regex.IsMatch(Pas, "[*|&{}+]")) MessageBox.Show("Пароль должен содеражать хотя бы один из символов: +|{}*", Error);
-            else if (!Regex.IsMatch(Pas, @"\d")) MessageBox.Show("Пароль должен содержать цифры", Error);
-            else if (Regex.IsMatch(Pas, @"(.)\1\1")) MessageBox.Show("Пароль не должен содеражть три подряд идущих символа", Error);
-            else if (Pas != PasswordRegistration2PasswordBox.Password.ToString()) MessageBox.Show("Пароли не совпадают", Error);
-            else 
+            else
             {
-                using (var d1 = new FurnitureShopEntities())
+                string mistake = password.CheckPassword();
+                if (mistake != "") MessageBox.Show(mistake, Error);
+                else if (password.Pas != PasswordRegistration2PasswordBox.Password.ToString()) MessageBox.Show("Пароли не совпадают", Error);
+                else
                 {
-                    bool enter = false;
-                
-                    foreach (var log in from f in d1.User select f)
+                    using (var d1 = new FurnitureShopEntitie())
                     {
-                        if (LoginRegistrationTextBox.Text.ToString() == log.Login.ToString())
-                        {
-                            enter = true;
-                            MessageBox.Show("Пользователь с таким логином уже существует", Error);
-                            break;
-                        }
-                    }
-                    if (!enter)
-                    {
-                        User user = new User()
-                        {
-                            Login = LoginRegistrationTextBox.Text.ToString(),
-                            RoleId = 1,
-                            Password = Pas          
-                        };
-                        if (FirstNameTextBox.Text.ToString() == "") user.FirstName = null; else user.FirstName = FirstNameTextBox.Text.ToString();
-                        if (LastNameTextBox.Text.ToString() == "") user.LastName = null; else user.LastName = LastNameTextBox.Text.ToString();
-                        if (SecondNameTextBox.Text.ToString() == "") user.SecondName = null; else user.SecondName = SecondNameTextBox.Text.ToString();
-                        if (PhotoRegistarationTextBox.Text.ToString() != "")
-                        try
-                        {
-                            user.Photo = ImageToByteArray(System.Drawing.Image.FromFile(PhotoRegistarationTextBox.Text.ToString()));
-                        }
-                        catch (FileNotFoundException)
-                        {
-                            MessageBox.Show("Не удалось загрузить фотографию", Error);
-                        }
-                        d1.User.Add(user);
-                        if (d1.SaveChanges() == 1) MessageBox.Show("Регистрация завершена успешно", Error); else MessageBox.Show("Регистрация не удалась", Error);
+                        bool enter = false;
 
+                        foreach (var log in from f in d1.User select f)
+                        {
+                            if (LoginRegistrationTextBox.Text.ToString() == log.Login.ToString())
+                            {
+                                enter = true;
+                                MessageBox.Show("Пользователь с таким логином уже существует", Error);
+                                break;
+                            }
+                        }
+                        if (!enter)
+                        {
+                            User user = new User()
+                            {
+                                Login = LoginRegistrationTextBox.Text.ToString(),
+                                RoleId = 1,
+                                Password = password.Pas
+                            };
+                            if (FirstNameTextBox.Text.ToString() == "") user.FirstName = null; else user.FirstName = FirstNameTextBox.Text.ToString();
+                            if (LastNameTextBox.Text.ToString() == "") user.LastName = null; else user.LastName = LastNameTextBox.Text.ToString();
+                            if (SecondNameTextBox.Text.ToString() == "") user.SecondName = null; else user.SecondName = SecondNameTextBox.Text.ToString();
+                            if (PhotoRegistarationTextBox.Text.ToString() != "")
+                                try
+                                {
+                                    user.Photo = ImageToByteArray(System.Drawing.Image.FromFile(PhotoRegistarationTextBox.Text.ToString()));
+                                }
+                                catch (FileNotFoundException)
+                                {
+                                    MessageBox.Show("Не удалось загрузить фотографию", Error);
+                                }
+                            d1.User.Add(user);
+                            if (d1.SaveChanges() == 1) MessageBox.Show("Регистрация завершена успешно", Error); else MessageBox.Show("Регистрация не удалась", Error);
+
+                        }
                     }
                 }
             }
@@ -200,8 +202,7 @@ namespace Shop
 
         private void GoToDirector(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
-            MakeHiddenGrid((Grid)button.Parent);
+            MakeHiddenParentGridOfButton((Button)sender);
             DirectorGrid.Visibility = Visibility.Visible;
         }
         private void SwitchingBetweenTabs (Grid gridMakeActive, Grid gridMakeInactive, Label labelMakeActive, Label labelMakeInactive)
@@ -240,7 +241,7 @@ namespace Shop
         }
         private void ShowEquipmentInformation()
         {
-            using (var db = new FurnitureShopEntities()) 
+            using (var db = new FurnitureShopEntitie()) 
             {
                 List<Spec> listS = new List<Spec>();
                 var list = db.Equipment.Select(p => new { p.Marking, p.Name, p.Equipment_type });
@@ -267,7 +268,7 @@ namespace Shop
 
         private void AddInformationToEquipment()
         {
-            using (var db = new FurnitureShopEntities1())
+            using (var db = new FurnitureShopEntitie())
             {
                 List<string> list = new List<string>();
                 foreach(var v in from f in db.Equipment_type select f.Equipment_type_name)
@@ -350,7 +351,7 @@ namespace Shop
             else if (EquipmentDatePurchaseDatePicker.Text == "") MessageBox.Show("Введите дату покупки", Error);
             else 
             {
-                using (var db = new FurnitureShopEntities1())
+                using (var db = new FurnitureShopEntitie())
                 {
                     bool enter = true;
                     foreach (var v in from f in db.Equipment select f.Marking)
@@ -405,6 +406,117 @@ namespace Shop
             EquipmentSpecificationNameComboBox.Text = "";
             EquipmentSpecificationValueTextBox.Text = "";
             FillEquipmentSpecificationComboBox();
+        }
+
+        private void GoToListMaterials(object sender, RoutedEventArgs e)
+        {
+            MaterialsGrid.Visibility = Visibility.Visible;
+            MakeHiddenParentGridOfButton((Button)sender);
+            GridToReturn = (Grid)((Button)sender).Parent;
+            if (GridToReturn == DirectorGrid || DeputyDirectorGrid == GridToReturn)
+            {
+                MaterialsDataGrid.IsReadOnly = false;
+            }
+            else
+            {
+                MaterialsDataGrid.IsReadOnly = true;
+            }
+        }
+
+        private void ReturnToLastGrid(object sender, RoutedEventArgs e)
+        {
+            MakeHiddenParentGridOfButton((Button)sender);
+            GridToReturn.Visibility = Visibility.Visible;
+        }
+        private void ShowMaterials(string quality)
+        {
+            using(var db = new FurnitureShopEntitie())
+            {
+                var k = from m in db.Materials
+                        where m.Quality1.QualityName == quality || quality== MaterialQualityAll
+                        select new Materials2
+                        {
+                            Articyl = m.Articyl,
+                            Name = m.Name,
+                            Kolichestvo = m.Kolichestvo,
+                            Edinica_izmerenia_name = m.Edinica_izmerenia1.Edinica_izmerenia_name,
+                            Price = m.Price,
+                            Shipper_name = m.Shipper.Shipper_name,
+                            DateShip = m.DateShip,
+                            QualityName = m.Quality1.QualityName
+                        };
+                
+                if (quality == MaterialQualityAll)
+                {
+                    listMaterials = k.ToList();
+                    MaterialsAll = listMaterials.Count;
+                    MaterialsShowLabel.Content = MaterialsAll;
+                }
+                else MaterialsShowLabel.Content = listMaterials.Count;
+                MaterialsAllLabel.Content = MaterialsAll;
+                MaterialsDataGrid.ItemsSource = listMaterials;
+
+            }
+
+        }
+        List<Materials2> listMaterials = new List<Materials2>();
+        int MaterialsAll = 0;
+        const string MaterialQualityAll = "Все";
+        private void MaterialsGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (((Grid)sender).Visibility == Visibility.Visible) ShowMaterials(MaterialQualityAll);
+            List<string> list = (from q in new FurnitureShopEntitie().Quality select q.QualityName).ToList();
+            list.Sort();
+            list.Insert(0, MaterialQualityAll);
+            MaterialsQualityComboBox.ItemsSource = list;
+            MaterialsQualityComboBox.SelectedIndex = 0;
+        }
+
+        private void MaterialsQualityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShowMaterials(((ComboBox)sender).SelectedItem.ToString());
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult res = MessageBox.Show("Удалить выбранную строку?", "Внимание!", MessageBoxButton.YesNo);
+            if (res == MessageBoxResult.Yes)
+            {
+                Materials2 o = (Materials2)MaterialsDataGrid.Items.CurrentItem;
+                listMaterials.Remove((Materials2)MaterialsDataGrid.Items.CurrentItem);
+                using (var db = new FurnitureShopEntitie())
+                {
+                    var obj = from f in db.Materials select f;
+                    foreach (var c in obj)
+                    {
+                        if (c.Articyl == o.Articyl)
+                        {
+                            db.Materials.Remove(c);
+                            break;
+                        }                        
+                    }
+                    db.SaveChanges();
+                }
+                MaterialsDataGrid.ItemsSource = null;
+                MaterialsDataGrid.ItemsSource = listMaterials;
+            }
+
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            MaterialsGrid.IsEnabled = false;
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            AddMaterialGrid.Visibility = Visibility.Hidden;
+            MaterialsGrid.IsEnabled = true;
+        }
+
+        private void AddMaterialButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

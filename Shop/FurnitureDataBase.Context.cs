@@ -13,10 +13,10 @@ namespace Shop
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class FurnitureShopEntities : DbContext
+    public partial class FurnitureShopEntitie : DbContext
     {
-        public FurnitureShopEntities()
-            : base("name=FurnitureShopEntities")
+        public FurnitureShopEntitie()
+            : base("name=FurnitureShopEntitie")
         {
         }
     
@@ -25,9 +25,9 @@ namespace Shop
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Dostavka> Dostavka { get; set; }
         public virtual DbSet<Edinica_izmerenia> Edinica_izmerenia { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
+        public virtual DbSet<Equipment_specification> Equipment_specification { get; set; }
         public virtual DbSet<Equipment_type> Equipment_type { get; set; }
         public virtual DbSet<Furnityra> Furnityra { get; set; }
         public virtual DbSet<GOST> GOST { get; set; }
@@ -46,6 +46,6 @@ namespace Shop
         public virtual DbSet<Type_complectyushih> Type_complectyushih { get; set; }
         public virtual DbSet<Type_material> Type_material { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<Equipment_specification> Equipment_specification { get; set; }
+        public virtual DbSet<Quality> Quality { get; set; }
     }
 }

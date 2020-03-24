@@ -48,6 +48,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -66,76 +67,76 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Dostavka.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
     <Compile Include="Edinica_izmerenia.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Equipment.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Equipment_specification.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Equipment_type.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
-    <Compile Include="Furnityra.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GOST.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Materials.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model2.cs">
+    <Compile Include="FurnitureDataBase.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Furnityra.cs">
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GOST.cs">
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Materials.cs">
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Operation.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Operation_specification.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Order.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Order_detail.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Product.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Quality.cs">
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Role.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Shipper.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Specification_furniture.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Specification_material.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Specification_sborochnay_edinica.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagrams.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Type_complectyushih.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Type_material.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.tt</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -145,15 +146,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EFModel1.cs">
+    <Compile Include="FurnitureDataBase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EFModel1.tt</DependentUpon>
+      <DependentUpon>FurnitureDataBase.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="FurnitureShopDataSet.Designer.cs">
+    <Compile Include="FurnitureDataBase.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FurnitureShopDataSet.xsd</DependentUpon>
+      <DependentUpon>FurnitureDataBase.edmx</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -161,26 +162,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Model2.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model2.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model2.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -198,34 +179,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="EFModel1.efmodel" />
-    <None Include="EFModel1.efmodel.diagram">
-      <DependentUpon>EFModel1.efmodel</DependentUpon>
-    </None>
-    <None Include="FurnitureShopDataSet.xsc">
-      <DependentUpon>FurnitureShopDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="FurnitureShopDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>FurnitureShopDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="FurnitureShopDataSet.xss">
-      <DependentUpon>FurnitureShopDataSet.xsd</DependentUpon>
-    </None>
-    <EntityDeploy Include="Model1.edmx">
+    <EntityDeploy Include="FurnitureDataBase.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+      <LastGenOutput>FurnitureDataBase.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </None>
-    <EntityDeploy Include="Model2.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model2.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model2.edmx.diagram">
-      <DependentUpon>Model2.edmx</DependentUpon>
+    <None Include="FurnitureDataBase.edmx.diagram">
+      <DependentUpon>FurnitureDataBase.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -237,26 +196,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EFModel1.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EFModel1.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model1.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model2.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model2.edmx</DependentUpon>
-      <LastGenOutput>Model2.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model2.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model2.edmx</DependentUpon>
-      <LastGenOutput>Model2.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
@@ -264,6 +203,18 @@
       <Project>{D01AA4A9-52E5-4FD3-98E5-4268D6683FC9}</Project>
       <Name>ClassLibrary1</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FurnitureDataBase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FurnitureDataBase.Context.cs</LastGenOutput>
+      <DependentUpon>FurnitureDataBase.edmx</DependentUpon>
+    </Content>
+    <Content Include="FurnitureDataBase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FurnitureDataBase.edmx</DependentUpon>
+      <LastGenOutput>FurnitureDataBase.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

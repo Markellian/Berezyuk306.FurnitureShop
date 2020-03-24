@@ -12,22 +12,17 @@ namespace Shop
     using System;
     using System.Collections.Generic;
     
-    public partial class Shipper
+    public partial class Quality
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Shipper()
+        public Quality()
         {
             this.Furnityra = new HashSet<Furnityra>();
             this.Materials = new HashSet<Materials>();
         }
     
-        public int Shipper_ID { get; set; }
-        public string Shipper_name { get; set; }
-        public string Shipper_country { get; set; }
-        public string Shipper_city { get; set; }
-        public string Shipper_region { get; set; }
-        public string Shipper_street { get; set; }
-        public int Shipper_house { get; set; }
+        public int QualityID { get; set; }
+        public string QualityName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Furnityra> Furnityra { get; set; }
