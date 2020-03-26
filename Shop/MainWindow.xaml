@@ -13,7 +13,7 @@
     </Window.Resources>
     <Grid>
 
-        <Grid x:Name="AuthGrid" Visibility="Hidden">
+        <Grid x:Name="AuthGrid" Visibility="Visible">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="4*"/>
@@ -120,7 +120,7 @@
             <Button Content="Назад" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="GoToAuth"/>
 
         </Grid>
-        <Grid x:Name="MaterialsGrid" Visibility="Visible" IsVisibleChanged="MaterialsGrid_IsVisibleChanged">
+        <Grid x:Name="MaterialsGrid" Visibility="Hidden" IsVisibleChanged="MaterialsGrid_IsVisibleChanged">
             <Button Content="Назад" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ReturnToLastGrid"/>
             <Label Content="Список материалов" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" HorizontalAlignment="Left" Margin="80,10,0,0" VerticalAlignment="Top" Height="34" Width="665"/>
             <DataGrid x:Name="MaterialsDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="297" Margin="54,89,0,0" VerticalAlignment="Top" Width="691">
@@ -140,13 +140,13 @@
             <Label x:Name="MaterialsShowLabel" Content="" HorizontalAlignment="Left" Margin="276,63,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.477,0.455"/>
             <Label Content="Всего: " HorizontalAlignment="Left" Margin="54,63,0,0" VerticalAlignment="Top"/>
             <Label Content="Показано: " HorizontalAlignment="Left" Margin="207,63,0,0" VerticalAlignment="Top"/>
-            <Button Content="Добавить" HorizontalAlignment="Left" Margin="54,391,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+            <Button x:Name="AddMaterialButton" Content="Добавить" HorizontalAlignment="Left" Margin="54,391,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
             <Button x:Name="DeleteMaterial" Content="Удалить" HorizontalAlignment="Left" Margin="670,391,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
 
         </Grid>
-        <Grid x:Name="AddMaterialGrid" Visibility="Visible" Background="White" Margin="199,58,213.6,24">
+        <Grid x:Name="AddMaterialGrid" IsVisibleChanged="AddMaterialGrid_IsVisibleChanged" Visibility="Hidden" Background="White" Margin="199,58,213.6,24">
             <Label BorderBrush="Black" BorderThickness="1"/>
-            <Button Content="X" HorizontalAlignment="Left" Margin="365,0,0,0" VerticalAlignment="Top" Width="16" Click="Button_Click_4"/>
+            <Button Content="X" HorizontalAlignment="Left" Margin="355,10,0,0" VerticalAlignment="Top" Width="16" Click="Button_Click_4"/>
             <Label Content="Артикул:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="99,20,0,0" VerticalAlignment="Top" Height="38" Width="70"/>
             <Label Content="Название:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="87,66,0,0" VerticalAlignment="Top" Height="37" Width="82"/>
             <Label Content="Ед. измерения:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="57,110,0,0" VerticalAlignment="Top" Height="39" Width="112"/>

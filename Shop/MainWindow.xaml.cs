@@ -416,10 +416,14 @@ namespace Shop
             if (GridToReturn == DirectorGrid || DeputyDirectorGrid == GridToReturn)
             {
                 MaterialsDataGrid.IsReadOnly = false;
+                AddMaterialButton.IsEnabled = true;
+                DeleteMaterial.IsEnabled = true;
             }
             else
             {
                 MaterialsDataGrid.IsReadOnly = true;
+                AddMaterialButton.IsEnabled = false;
+                DeleteMaterial.IsEnabled = false;
             }
         }
 
@@ -433,7 +437,7 @@ namespace Shop
             using(var db = new FurnitureShopEntitie())
             {
                 var k = from m in db.Materials
-                        where m.Quality1.QualityName == quality || quality== MaterialQualityAll
+                        where m.Quality1.QualityName == quality || quality == MaterialQualityAll
                         select new Materials2
                         {
                             Articyl = m.Articyl,
@@ -445,14 +449,22 @@ namespace Shop
                             DateShip = m.DateShip,
                             QualityName = m.Quality1.QualityName
                         };
-                
+
                 if (quality == MaterialQualityAll)
                 {
                     listMaterials = k.ToList();
                     MaterialsAll = listMaterials.Count;
                     MaterialsShowLabel.Content = MaterialsAll;
                 }
-                else MaterialsShowLabel.Content = listMaterials.Count;
+                else
+                {
+                    listMaterials = new List<Materials2>();
+                    foreach (var l in k)
+                    {
+                        if (l.QualityName == quality) listMaterials.Add(l);
+                    }
+                    MaterialsShowLabel.Content = listMaterials.Count;
+                }
                 MaterialsAllLabel.Content = MaterialsAll;
                 MaterialsDataGrid.ItemsSource = listMaterials;
 
@@ -506,6 +518,7 @@ namespace Shop
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             MaterialsGrid.IsEnabled = false;
+            AddMaterialGrid.Visibility = Visibility.Visible;
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -516,7 +529,93 @@ namespace Shop
 
         private void AddMaterialButton_Click(object sender, RoutedEventArgs e)
         {
+            decimal b = 0;
+            int a = 0;
+            if (MaterialArticylTextBox.Text == "") MessageBox.Show("Артикул не указан", Error);
+            else if (MaterialNameTextBox.Text == "") MessageBox.Show("Название не указано", Error);
+            else if (MaterialQuantityTextBox.Text == "") MessageBox.Show("Количество не указано", Error);
+            else if (MaterialPriceTextBox.Text == "") MessageBox.Show("Цена не указана", Error);
+            else
+            {
+                if (MaterialQuantityTextBox.Text != "0")
+                {
+                    Int32.TryParse(MaterialQuantityTextBox.Text, out a);
+                    if (a == 0)
+                    {
+                        MessageBox.Show("Количество указано неверно", Error);
+                        return;
+                    }
+                }
+                if (MaterialPriceTextBox.Text != "0")
+                {
+                    Decimal.TryParse(MaterialPriceTextBox.Text, out b);
+                    if (b == 0)
+                    {
+                        MessageBox.Show("Цена указана неверно", Error);
+                        return;
+                    }
+                }
 
+                using (var db = new FurnitureShopEntitie())
+                {
+                    var mat = db.Materials;
+                    foreach (var m in mat)
+                    {
+                        if (m.Articyl == MaterialArticylTextBox.Text)
+                        {
+                            MessageBox.Show("Материал с таким артикулом уже существует", Error);
+                            return;
+                        }
+                    }
+                    var EI = from f in db.Edinica_izmerenia where f.Edinica_izmerenia_name == MaterialEdIzmComboBox.SelectedItem.ToString() select f.Edinica_izmerenia_id;
+                    int ei = 1;
+                    foreach (var v in EI)
+                    {
+                        ei = v;
+                    }
+                    var MT = from f in db.Type_material where f.Type_material_name == MaterialTypeComboBox.SelectedItem.ToString() select f.Type_material_id;
+                    int mt = 1;
+                    foreach (var v in MT)
+                    {
+                        mt = v;
+                    }
+                    Materials materials = new Materials()
+                    {
+                        Articyl = MaterialArticylTextBox.Text,
+                        Name = MaterialNameTextBox.Text,
+                        Edinica_izmerenia = ei,
+                        Kolichestvo = a,
+                        Type_material = mt,
+                        Price = b
+                    };
+                    db.Materials.Add(materials);
+                    if (db.SaveChanges() == 0) MessageBox.Show("Не удалось добавить материал", Error);
+                    else
+                    {
+                        MessageBox.Show("Материал добавлен");
+                        Button_Click_4(null, null);
+                        ShowMaterials(MaterialQualityAll);
+                    }
+                }
+            }
+        }
+
+        private void AddMaterialGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            using (var db = new FurnitureShopEntitie())
+            {
+                var list = from f in db.Edinica_izmerenia select f.Edinica_izmerenia_name;
+                MaterialEdIzmComboBox.ItemsSource = list.ToList();
+                MaterialEdIzmComboBox.SelectedIndex = 0;
+
+                list = from f in db.Type_material select f.Type_material_name;
+                MaterialTypeComboBox.ItemsSource = list.ToList();
+                MaterialTypeComboBox.SelectedIndex = 0;
+            }
+            MaterialArticylTextBox.Text = "";
+            MaterialNameTextBox.Text = "";
+            MaterialQuantityTextBox.Text = "";
+            MaterialPriceTextBox.Text = "";
         }
     }
 }
